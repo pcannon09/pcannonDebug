@@ -1,0 +1,24 @@
+# Private
+.private/*
+!.private/project.json
+
+# Tmp and logs
+*.tmp
+*.swp
+*.bak
+
+tmp/
+logs/
+.cache/
+
+# Generated files
+build/
+
+./vendor/io-controller-mini/obj
+
+# OS
+.DS_STORE
+
+# Docs
+docs/
+
