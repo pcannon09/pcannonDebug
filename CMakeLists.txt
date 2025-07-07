@@ -24,7 +24,7 @@ message(STATUS "${projectName} version: ${projectVersion}")
 
 # Setup
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_STANDARD 11) # Minimum version can be C++11 but there is some support for C++98
+set(CMAKE_CXX_STANDARD 17) # Minimum version can be C++11, full support for C++17
 
 # Dir setup
 set(srcDir "${CMAKE_CURRENT_SOURCE_DIR}/src")
