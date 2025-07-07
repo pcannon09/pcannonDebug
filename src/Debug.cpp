@@ -53,7 +53,7 @@ namespace pd
 		this->close();
 	}
 
-	std::string Debug::log(const std::string &_type, const std::string &_msg)
+	std::string Debug::log(const std::string &_type, const std::string &_msg, unsigned int _level)
 	{
 		std::string msg;
 		std::string type = _type;
@@ -90,19 +90,31 @@ namespace pd
 
 		msg += this->settings.endMsg + "] " + (this->settings.postEndMsg) + _msg + this->settings.totalEndMsg + "\n";
 
-		if (this->settings.output) std::cout << msg;
+		if (this->settings.output)
+		{
+			if ((!this->settings.logLevelIgnoreOutput && this->settings.logLevel == 0) || 
+    				(this->settings.logLevel > 0 && _level <= this->settings.logLevel))
+    		{
+    			std::cout << msg;
+			}
+		}
+
 		if (!this->settings.blockedSave)
 		{
-# 			ifndef __PD_NO_FULL_SUPPORT
-			if (!fs::exists(fs::path(this->settings.filePath).parent_path()))
+			if ((!this->settings.logLevelIgnoreSave && this->settings.logLevel == 0) || 
+    				(this->settings.logLevel > 0 && _level <= this->settings.logLevel))
 			{
-				fs::create_directories(fs::path(this->settings.filePath).parent_path());
+# 				ifndef __PD_NO_FULL_SUPPORT
+				if (!fs::exists(fs::path(this->settings.filePath).parent_path()))
+				{
+					fs::create_directories(fs::path(this->settings.filePath).parent_path());
 
-				this->file->close(); this->file->open(this->settings.filePath, this->settings.openMode);
+					this->file->close(); this->file->open(this->settings.filePath, this->settings.openMode);
+				}
+# 				endif
+
+				*this->file << msg;
 			}
-# 			endif
-
-			*this->file << msg;
 		}
 
 		return msg;

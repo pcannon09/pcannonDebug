@@ -1,7 +1,6 @@
 #pragma  once
 
 #if __cplusplus >= 201103L
-
 #if __cplusplus < 201703L
 # 	ifdef __PD_NO_FULL_SUPPORT
 # 		undef __PD_NO_FULL_SUPPORT
@@ -24,6 +23,10 @@ namespace pd
 		bool output = true;
 		bool blockedSave = false;
 		bool custom = false;
+		bool logLevelIgnoreOutput = false;
+		bool logLevelIgnoreSave = false;
+
+		unsigned int logLevel = 0;
 
 		std::string filePath;
 		std::string startMsg;
@@ -58,7 +61,7 @@ namespace pd
 
 		std::pair<bool, std::string> constructInfo();
 
-		std::string log(const std::string &_type, const std::string &_msg);
+		std::string log(const std::string &_type, const std::string &_msg, unsigned int _level = 0);
 
 		std::string getID() const;
 		std::fstream *getFile() const;
