@@ -1,4 +1,14 @@
+#pragma  once
+
 #if __cplusplus >= 201103L
+
+#if __cplusplus < 201703L
+# 	ifdef __PD_NO_FULL_SUPPORT
+# 		undef __PD_NO_FULL_SUPPORT
+# 	endif
+# 	define __PD_NO_FULL_SUPPORT
+# 	warning "No full support for the current C++ standard (Full Support is in C++17)"
+#endif
 
 #include <string>
 #include <fstream>

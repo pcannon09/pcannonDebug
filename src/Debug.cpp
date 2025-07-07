@@ -2,6 +2,12 @@
 #include <algorithm>
 #include <string>
 
+#ifndef __PD_NO_FULL_SUPPORT
+# 	include <filesystem>
+
+namespace fs = std::filesystem;
+#endif
+
 #include "../inc/Debug.hpp"
 #include "../vendor/cpp-time-utils/inc/Time.hpp"
 
@@ -57,7 +63,7 @@ namespace pd
 		if (!this->settings.custom)
 		{
 			msg += this->settings.preStartMsg;
-			msg += "[ " + this->settings.startMsg + type + (this->settings.debugID ? this->id + " | " : "");
+			msg += "[ " + this->settings.startMsg + type + " | " + (this->settings.debugID ? this->id + " | " : "");
 
 			if (this->settings.timeStamp)
 			{
@@ -79,15 +85,31 @@ namespace pd
 		else msg = this->settings.totalCustom;
 
 		if (this->settings.output) std::cout << msg;
-		if (!this->settings.blockedSave) *this->file << msg;
+		if (!this->settings.blockedSave)
+		{
+# 			ifndef __PD_NO_FULL_SUPPORT
+			if (!fs::exists(fs::path(this->settings.filePath).parent_path()))
+			{
+				fs::create_directory(fs::path(this->settings.filePath).parent_path());
+
+				this->file->close(); this->file->open(this->settings.filePath, this->settings.openMode);
+			}
+# 			endif
+
+			*this->file << msg;
+		}
 
 		return msg;
 	}
 
 	bool Debug::close()
 	{
-		this->file->close();
-		delete this->file; this->file = nullptr;
+		if (this->file)
+		{
+			this->file->close();
+
+			delete this->file; this->file = nullptr;
+		}
 
 		return true;
 	}
