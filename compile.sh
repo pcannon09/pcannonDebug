@@ -32,7 +32,7 @@ else
 fi
 
 if [ "$1" == "" ]; then
-    cmake ..
+    cmake -G Ninja ..
 
 elif [ "$1" == "--settings" ]; then
     cd ..
@@ -62,6 +62,7 @@ elif [ "$1" == "--settings" ]; then
     exit
 fi
 
-make -j${cores}
+ninja -j$cores
 
 cd ..
+
