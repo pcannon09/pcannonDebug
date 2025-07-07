@@ -90,7 +90,7 @@ namespace pd
 # 			ifndef __PD_NO_FULL_SUPPORT
 			if (!fs::exists(fs::path(this->settings.filePath).parent_path()))
 			{
-				fs::create_directory(fs::path(this->settings.filePath).parent_path());
+				fs::create_directories(fs::path(this->settings.filePath).parent_path());
 
 				this->file->close(); this->file->open(this->settings.filePath, this->settings.openMode);
 			}
