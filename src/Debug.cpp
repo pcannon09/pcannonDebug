@@ -60,11 +60,13 @@ namespace pd
 
 		std::transform(type.begin(), type.end(), type.begin(), ::toupper);
 
+		msg += this->settings.preStartMsg;
+
 		if (!this->settings.custom)
 		{
-			msg += this->settings.preStartMsg;
-			msg += "[ " + this->settings.startMsg + type + " | " + (this->settings.debugID ? this->id + " | " : "");
+			msg += "[ " + this->settings.startMsg + type + (this->settings.debugID ? + " | " + this->id : "");
 
+			// DATE AND TIME INFORMATION
 			if (this->settings.timeStamp)
 			{
 				timeUtils::TimeInfo timeInfo;
@@ -74,15 +76,19 @@ namespace pd
 				time.update(timeInfo);
 				time.update(dateInfo);
 
-				msg += std::to_string(dateInfo.year) + "-" + std::to_string(dateInfo.month) + "-" + std::to_string(dateInfo.day);
-				msg += " | " + std::to_string(timeInfo.hour) + ":" + std::to_string(timeInfo.min) + ":" + std::to_string(timeInfo.sec) + "." + std::to_string(timeInfo.ms)
-					+ (this->settings.timeZone ? " " + std::to_string(time.getUTCOffset().hour) + ":" + std::to_string(time.getUTCOffset().min) : "");
+				msg += " | " + std::to_string(dateInfo.year) + "-" + std::to_string(dateInfo.month) + "-" + std::to_string(dateInfo.day) + " | ";
+				msg += std::to_string(timeInfo.hour) + ":" + std::to_string(timeInfo.min) + ":" + std::to_string(timeInfo.sec) + "." + std::to_string(timeInfo.ms)
+					+ (this->settings.timeZone ? " +" + std::to_string(time.getUTCOffset().hour) + ":" + std::to_string(time.getUTCOffset().min) : "");
 			}
 
-			msg += this->settings.endMsg + "] " + (this->settings.postEndMsg) + _msg + this->settings.totalEndMsg + "\n";
+			else msg += " ";
+
+			// FINISG MSG
 		}
 
-		else msg = this->settings.totalCustom;
+		else msg = "[ " + this->settings.startMsg + this->settings.totalCustom;
+
+		msg += this->settings.endMsg + "] " + (this->settings.postEndMsg) + _msg + this->settings.totalEndMsg + "\n";
 
 		if (this->settings.output) std::cout << msg;
 		if (!this->settings.blockedSave)
