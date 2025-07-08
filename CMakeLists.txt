@@ -14,7 +14,7 @@ project(${projectName}
 )
 
 # Flags
-set(programFlags            "-g -fsanitize=address -Wunused -Wall -Wno-range-loop-analysis")
+set(programFlags            "-g -fsanitize=address -Wunused -Wall -Wno-range-loop-analysis -O3")
 set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} ${programFlags}")
 set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${programFlags}")
 
