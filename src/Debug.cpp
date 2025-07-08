@@ -105,7 +105,7 @@ namespace pd
     				(this->settings.logLevel > 0 && _level <= this->settings.logLevel))
 			{
 # 				ifndef __PD_NO_FULL_SUPPORT
-				if (!fs::exists(fs::path(this->settings.filePath).parent_path()))
+				if (!fs::exists(fs::path(this->settings.filePath).parent_path()) && !fs::is_regular_file(this->settings.filePath))
 				{
 					fs::create_directories(fs::path(this->settings.filePath).parent_path());
 
