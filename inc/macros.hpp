@@ -34,11 +34,43 @@
 #define PD_SIMPLE_DEBUGLOG(_type, _msg) \
     std::cout << _type << " [" << std::string(std::string(__FILE__) + ":" + std::to_string(__LINE__)) << "] " << _msg << "\n";
 
+// Define _PD_DEBUG_BREAK() macro
+#if defined(_MSC_VER)
+#   include <intrin.h>
+#   define _PD_DEBUG_BREAK() __debugbreak()
+#elif defined(__clang__) || defined(__GNUC__)
+#   if defined(__has_builtin)
+#       define _PD_DEBUG_BREAK() __builtin_debugtrap()
+#   elif __has_builtin(__builtin_debugtrap)
+#       define _PD_DEBUG_BREAK() __builtin_trap()
+#   else
+#       include <signal.h>
+#       define _PD_DEBUG_BREAK() raise(SIGTRAP)
+#   endif // defined(__has_builtin)
+#else 
+#   include <signal.h>
+#   define _PD_DEBUG_BREAK() raise(SIGTRAP)
+#endif // defined(_MSC_VER)
+
+#ifndef PD_GLOBAL_DEBUG
+#   warning "Must set `PD_GLOBAL_DEBUG` to `true` if debugging with breakpoint traps"
+#   define PD_GLOBAL_DEBUG true
+#endif // !defined(PD_GLOBAL_DEBUG)
+
+// Define PD_DEBUG_BREAK() macro
+#if PD_GLOBAL_DEBUG // Debug in projects are enabled
+#   define PD_DEBUG_BREAK(_msg) \
+        std::cout << "[ BUILTIN DEBUG BREAK <" __FILE__ << ":" << std::to_string(__LINE__) << "> ] " << _msg << "\n"; \
+        _PD_DEBUG_BREAK();
+#else // Debug in projects are disabled
+#   define PD_DEBUG_BREAK(_msg)
+#endif // PD_GLOBAL_DEBUG == true
+
 // Macro utils
 #define PD_STRINGIFY(x) #x
 #define PD_TOSTRING(x) PD_STRINGIFY(x)
 
 #ifndef PD_DEV
 #	define PD_DEV true
-#endif
+#endif // PD_DEV
 
