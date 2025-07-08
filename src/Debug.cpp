@@ -42,7 +42,7 @@ namespace pd
 	Debug::Debug(const std::string &_id, const pd::DebugSettings &_settings)
 		: id(_id), settings(_settings)
 	{
-		this-> constructed = this->__init();
+		this->constructed = this->__init();
 
 		if (!this->constructed)
 			return;
@@ -128,6 +128,8 @@ namespace pd
 
 			delete this->file; this->file = nullptr;
 		}
+
+		else return false;
 
 		return true;
 	}
