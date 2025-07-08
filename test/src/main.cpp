@@ -6,6 +6,8 @@
 
 int main()
 {
+	PD_SIMPLE_DEBUGLOG("note", "Use a debugger for more features");
+
 	// NOTE:
 	// Set the settings for the debugger
 	// This is not required, but if needed to customize the output, it can be used
@@ -47,6 +49,10 @@ int main()
 
 	// Set a simple debug log without setting up the debugger nor creating a new object
 	PD_SIMPLE_DEBUGLOG("information", "This is a simple PD_SIMPLE_DEBUGLOG message");
+
+	PD_DEBUG_BREAK("Break 1");
+
+	PD_SIMPLE_DEBUGLOG("information", "NEXT");
 
 	return (debug.close() ? 0 : 1);
 }
