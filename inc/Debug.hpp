@@ -7,7 +7,7 @@
 # 	endif
 # 	define __PD_NO_FULL_SUPPORT
 # 	warning "No full support for the current C++ standard (Full Support is in C++17)"
-#endif
+#endif // __cplusplus < 201703L
 
 #include <string>
 #include <fstream>
@@ -118,5 +118,5 @@ namespace pd
 #else
 # 	include "../inc/macros.hpp"
 # 	warn "Must use C++11 or later"
-#endif // __cplusplus
+#endif // __cplusplus >= 201103L
 
