@@ -99,7 +99,7 @@ namespace pd
 			}
 		}
 
-		if (!this->settings.blockedSave)
+		if (!this->settings.blockedSave && !this->settings.filePath.empty())
 		{
 			if ((!this->settings.logLevelIgnoreSave && this->settings.logLevel == 0) || 
     				(this->settings.logLevel > 0 && _level <= this->settings.logLevel))
